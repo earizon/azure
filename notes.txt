@@ -421,7 +421,7 @@ REFS:
       │    ├ Owner      : Full access + grant/delegate to other users
       │    ├ Contributor: Full access
       │    └ Reader     : view resources
-      │    ˃30 pre-built roles (Network|DB|Virt.Mach  Contributor, ...)
+      │    >30 pre-built roles (Network|DB|Virt.Mach  Contributor, ...)
       │
       │
       ├  Resource Locks :  Protects against (accidental) removal  of
@@ -1975,7 +1975,7 @@ Backend will provide support for:
                                ------------------------------------------
                                navigate and sing-in to  windows dev center
                                → go to "my apps" → click "new app registration"
-                                 → expand "services ˃ push notifications":
+                                 → expand "services > push notifications":
                                    click "live services" site under
                                    microsoft Azure mobile services@"push notifications" page,
                                  → write down the values under application secrets and the package sid ✍
@@ -2028,8 +2028,8 @@ Backend will provide support for:
                                  |      notificationhubname);
                                  |
                                  | var windowstoastpayload = // define a wns payload
-                                 |   @"˂toast˃˂visual˃˂binding template=""toasttext01""˃˂text id=""1""˃"
-                                 |   + item.text + @"˂/text˃˂/binding˃˂/visual˃˂/toast˃";
+                                 |   @"<toast><visual><binding template=""toasttext01""><text id=""1"">"
+                                 |   + item.text + @"</text></binding></visual></toast>";
                                  | try {
                                  |   // send the push notification.
                                  |   var result = await
@@ -2065,8 +2065,8 @@ Backend will provide support for:
                              | logger.info('running todoitem.insert');
 
                              | // define the wns payload that contains the new item text.
-                             | var payload = "˂toast˃˂visual˃˂binding template=\toasttext01\˃˂text id=\"1\"˃"
-                             |               + context.item.text + "˂/text˃˂/binding˃˂/visual˃˂/toast˃";
+                             | var payload = "<toast><visual><binding template=\toasttext01\><text id=\"1\">"
+                             |               + context.item.text + "</text></binding></visual></toast>";
                              |
                              | // execute the insert.  the insert returns the results as a promise,
                              | // do the push as a post-execute action within the promise flow.
@@ -2144,7 +2144,7 @@ ops awaiting sync   │ // init sync. context:
    ex: filtering on userid:
    | await todotable.pullasync(
    |     "todoitems" +  userid ,
-   |     synctable.where(u =˃ u.userid == userid ));
+   |     synctable.where(u => u.userid == userid ));
 
 - Update client app for offline support
 
@@ -2422,12 +2422,12 @@ ASP.NET C# how-to with Swashbuckle
 
   (startup configureservices method)
   public void configureservices(iservicecollection services) {
-    services.adddbcontext˂todocontext˃(opt =˃
+    services.adddbcontext<todocontext>(opt =>
       opt.useinmemorydatabase("todolist"));
     services.addmvc().setcompatibilityversion(
       compatibilityversion.version_2_1);
 
-    services .addswaggergen (c =˃        // ← STEP 1) register swagger generator
+    services .addswaggergen (c =>        // ← STEP 1) register swagger generator
     {                                    //           by defining 1+ swagger docs.
       c.swaggerdoc("v1",
       new info {
@@ -2445,7 +2445,7 @@ ASP.NET C# how-to with Swashbuckle
       app .useswagger() ;                 //← STEP 3) enable middleware to serve
                                           //          generated swagger as JSON endpoint.
 
-      app .useswaggerui (c =˃ {           // ← STEP 3) enable swagger-ui
+      app .useswaggerui (c => {           // ← STEP 3) enable swagger-ui
         c.swaggerendpoint(
            "/swagger/v1/swagger.JSON",
            "my API v1");
@@ -2463,7 +2463,7 @@ ASP.NET C# how-to with Swashbuckle
  information such as the author, license, and description:
 
  // register the swagger generator, defining 1+ swagger docs.
- services.addswaggergen(c =˃
+ services.addswaggergen(c =>
  {
      c.swaggerdoc("v1", new info
      {
@@ -2490,10 +2490,10 @@ STEP 1) configure project to enable xml output doc.
    visual studio → solution explorer → right-click project
    → select edit → "project_name".csproj and add next lines :
 
-   ˂propertygroup˃
-       ˂generatedocumentationfile˃true˂/generatedocumentationfile˃
-       ˂nowarn˃$(nowarn);1591˂/nowarn˃ ← semicolon-delimited list
-   ˂/propertygroup˃                      enclose the code with #pragma
+   <propertygroup>
+       <generatedocumentationfile>true</generatedocumentationfile>
+       <nowarn>$(nowarn);1591</nowarn> ← semicolon-delimited list
+   </propertygroup>                      enclose the code with #pragma
                                          to suppress specific code like
                                          #pragma warning disable cs1591
                                          public class program { .... }
@@ -2505,11 +2505,11 @@ STEP 1) configure project to enable xml output doc.
 STEP 2) configure swagger to use the generated xml file.
 
   public void configureservices(iservicecollection services) {
-    services.adddbcontext˂todocontext˃(opt =˃
+    services.adddbcontext<todocontext>(opt =>
         opt.useinmemorydatabase("todolist"));
     services.addmvc()
         .setcompatibilityversion(compatibilityversion.version_2_1);
-    services.addswaggergen(c =˃ {             // ← register swagger generator,
+    services.addswaggergen(c => {             // ← register swagger generator,
       c.swaggerdoc("v1", new info {           //   defining 1+ swagger  docs
           version = "v1",
           title = "todo API",
@@ -2535,10 +2535,10 @@ STEP 2) configure swagger to use the generated xml file.
   web API project.  the appcontext.basedirectory property is used to
   construct a path to the xml file.
 
-  /// ˂summary˃                           ←······· triple-slash enhances swagger ui
+  /// <summary>                           ←······· triple-slash enhances swagger ui
   /// deletes a specific todoitem.                 by adding description to section header.
-  /// ˂/summary˃                                   add
-  /// ˂param name="id"˃˂/param˃                    swagger ui will translate   ˂summary˃  to:
+  /// </summary>                                   add
+  /// <param name="id"></param>                    swagger ui will translate   <summary>  to:
   [httpdelete("{id}")]                             the ui is driven by the generated JSON schema:
   public iactionresult delete(long id) {           "delete": {
     var todo = _context.todoitems.find(id);          "tags": [ "todo" ],
@@ -2548,11 +2548,11 @@ STEP 2) configure swagger to use the generated xml file.
     return nocontent();                            }
   }
 
-  /// ˂summary˃
+  /// <summary>
   /// creates a todoitem.
-  /// ˂/summary˃
-  /// ˂remarks˃                                             ← Add action method documentation,
-  /// sample request:                                         supplementing ˂summary˃ information
+  /// </summary>
+  /// <remarks>                                             ← Add action method documentation,
+  /// sample request:                                         supplementing <summary> information
   ///                                                         text, JSON, or xml allowed
   ///     post /todo
   ///     {
@@ -2560,18 +2560,18 @@ STEP 2) configure swagger to use the generated xml file.
   ///        "name": "item1",
   ///        "iscomplete": true
   ///     }
-  /// ˂/remarks˃
-  /// ˂param name="item"˃˂/param˃
-  /// ˂returns˃a newly created todoitem˂/returns˃
-  /// ˂response code="201"˃returns the newly created item˂/response˃
-  /// ˂response code="400"˃if the item is null˂/response˃
-  /// ˂returns˃a newly created todoitem˂/returns˃            ←  describing response types
-  /// ˂response code="201"˃returns new item˂/response˃
-  /// ˂response code="400"˃if the item is null˂/response˃
+  /// </remarks>
+  /// <param name="item"></param>
+  /// <returns>a newly created todoitem</returns>
+  /// <response code="201">returns the newly created item</response>
+  /// <response code="400">if the item is null</response>
+  /// <returns>a newly created todoitem</returns>            ←  describing response types
+  /// <response code="201">returns new item</response>
+  /// <response code="400">if the item is null</response>
   [httppost]
   [producesresponsetype(201)]
   [producesresponsetype(400)]
-  public actionresult˂todoitem˃ create(todoitem item) {
+  public actionresult<todoitem> create(todoitem item) {
       _context.todoitems.add(item);
       _context.savechanges();
       return createdatroute("gettodo", new { id = item.id }, item);
@@ -2938,15 +2938,15 @@ data from within code.              1                            └────
     often output of one function needs to be applied
     to the input of another function.  (a la Unix Pipeline).
     Ex code:
-    public static async task˂object˃
+    public static async task<object>
       run(  DurableOrchestrationContext ctx ) {
         try {
             // ☞ "f1", "f2", ... : names of other functions in
             // funct-app
-            var x = awaitB ctx .callactivityasync˂object˃("f1");
-            var y = awaitB ctx .callactivityasync˂object˃("f2", x);
-            var z = awaitB ctx .callactivityasync˂object˃("f3", y);
-            return  awaitB ctx .callactivityasync˂object˃("f4", z);
+            var x = awaitB ctx .callactivityasync<object>("f1");
+            var y = awaitB ctx .callactivityasync<object>("f2", x);
+            var z = awaitB ctx .callactivityasync<object>("f3", y);
+            return  awaitB ctx .callactivityasync<object>("f4", z);
                      ^     └┬┘
                      │ ☞   ctx allow to invoke other functions
                      │     by name, passing params, and returning
@@ -2981,15 +2981,15 @@ data from within code.              1                            └────
     - with     durable functions, code is much simpler. Ex:
       public static
       async task run(DurableOrchestrationContext ctx) {
-          var paralleltasks = new list˂task˂int˃˃();
+          var paralleltasks = new list<task<int>>();
 
           // get a list of n work items to process in parallel
           object[] workbatch = await   ctx .
-                                 callActivityAsync˂object[]˃("f1");
+                                 callActivityAsync<object[]>("f1");
 
-          for (int i = 0; i ˂ workbatch.length; i++) {
-              Task˂int˃   task  =   ctx .       //  ← fan-out work distributed
-                   callActivityAsync ˂int˃      //     to N f2 instances
+          for (int i = 0; i < workbatch.length; i++) {
+              Task<int>   task  =   ctx .       //  ← fan-out work distributed
+                   callActivityAsync <int>      //     to N f2 instances
                    ("f2", workbatch[i]);
               paralleltasks.add(task);          // ← dynamic list trace tasks
           }
@@ -2997,7 +2997,7 @@ data from within code.              1                            └────
           await taskB .whenAll (paralleltasks); //  ← wait for all called fun. to finish.
                                                 //    Similar to https://earizon.github.io/txt_world_domination/viewer.html?payload=../DevOps/notes.txt
           int sum = paralleltasks.              // ← Aggregate all outputs
-                    sum(t =˃ t.result);
+                    sum(t => t.result);
           await ctx.                            // ← send result to f3
                 callactivityasync("f3", sum);
       }
@@ -3045,7 +3045,7 @@ data from within code.              1                            └────
      - http-triggered function to start a new orchestrator
        function instance wrapping function  "wrappedFunction" .
        public static
-       async task˂httpResponseMessage˃ run(
+       async task<httpResponseMessage> run(
          httprequestmessage req,
          DurableOrchestrationClient starter,
          string wrappedFunction , ← value taken from incoming URL
@@ -3053,7 +3053,7 @@ data from within code.              1                            └────
          // wrapped function name comes from input URL.
          // function input comes from the request content.
          dynamic eventdata = await req.content.
-                              readAsync˂Object˃();
+                              readAsync<Object>();
          string instanceId = await   starter . // ← Start Orchestra.
                      startNewAsync( wrappedFunction ,
                      eventdata);
@@ -3084,12 +3084,12 @@ data from within code.              1                            └────
         Ex: C# script
         public static
         async task run(  DurableOrchestrationContext ctx ) {
-          int jobid           =   ctx .getinput˂int˃();
+          int jobid           =   ctx .getinput<int>();
           int pollinginterval = getpollinginterval();
           datetime expirytime = getexpirytime();
-          while (  ctx .currentutcdatetime ˂ expirytime) {
+          while (  ctx .currentutcdatetime < expirytime) {
             var jobstatus = await
-                  ctx .callactivityasync˂string˃
+                  ctx .callactivityasync<string>
                            ("getjobstatus", jobid);
               if (jobstatus == "completed") {
                 await   ctx .callActivityAsync(
@@ -3120,8 +3120,8 @@ data from within code.              1                            └────
         task durabletimeout =   ctx .createtimer(duetime,
                timeoutcts.token);
 
-        task˂bool˃ approvalevent =
-              ctx .waitforexternalevent˂bool˃("approvalevent");
+        task<bool> approvalevent =
+              ctx .waitforexternalevent<bool>("approvalevent");
 
         if ( approvalevent ==
                 await taskB .whenAny (approvalevent, durabletimeout)) {
@@ -3309,8 +3309,8 @@ a.table storage (datastore) service:
            |table storage              | Cosmos DB
            |                           | table API
 -----------+---------------------------+---------------------
-latency    |fast/but no upper bounds   | ˂10-ms reads
-           |                           | ˂15-ms writes
+latency    |fast/but no upper bounds   | <10-ms reads
+           |                           | <15-ms writes
            |                           | (99th percentile)
            |                           | any scale/worldwide
 -----------+---------------------------+---------------------
@@ -3319,7 +3319,7 @@ throughput |variable model             | highly scalable with
            |                           | per table that's backed by
            |                           | slas. accounts have no upper
            |                           | limit on throughput and
-           |                           | support ˃10 million
+           |                           | support >10 million
            |                           | operations/s per table.
 -----------+---------------------------+---------------------
 global     |single region              | turnkey global distribution
@@ -3661,17 +3661,17 @@ an stored access policy:
  - up to 5 access policies by container/table/queue.
  - call   "set acl" operation for resource
    - request body specifies terms of the access policy
-     ˂?xml version="1.0" encoding="utf-8"?˃
-     ˂signedidentifiers˃
-       ˂signedidentifier˃               ← corresponds 1←→ signed policy
-         ˂id˃unique-64-char-value˂/id˃  ← "custom id", 64chars max
-         ˂accesspolicy˃                 ← (optional) params
-           ˂start˃start-time˂/start˃
-           ˂expiry˃expiry-time˂/expiry˃
-           ˂permission˃abbreviated-permission-list˂/permission˃
-         ˂/accesspolicy˃
-       ˂/signedidentifier˃
-     ˂/signedidentifiers˃
+     <?xml version="1.0" encoding="utf-8"?>
+     <signedidentifiers>
+       <signedidentifier>               ← corresponds 1←→ signed policy
+         <id>unique-64-char-value</id>  ← "custom id", 64chars max
+         <accesspolicy>                 ← (optional) params
+           <start>start-time</start>
+           <expiry>expiry-time</expiry>
+           <permission>abbreviated-permission-list</permission>
+         </accesspolicy>
+       </signedidentifier>
+     </signedidentifiers>
 
      note: table entity-range-restrictions
             (startpk, startrk, endpk, and endrk)
@@ -3871,31 +3871,31 @@ two types of query operations:
 
  ( m:type indicates type value type for a given property)
 
- ˂?xml version="1.0" encoding="utf-8" standalone="yes"?˃
- ˂entry
+ <?xml version="1.0" encoding="utf-8" standalone="yes"?>
+ <entry
  xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices"
  xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadat
- a" xmlns="http://www.w3.org/2005/atom"˃
-   ˂title /˃
-   ˂author˃
-     ˂name /˃
-   ˂/author˃
-   ˂id /˃
-   ˂content type="application/xml"˃
-     ˂m:properties˃    ←  entity's property defs
-       ˂d:address                      ˃mountain view˂/d:address˃
-       ˂d:age     m:type="edm.int32"   ˃23˂/d:age˃
-       ˂d:amntdue m:type="edm.double"  ˃200.23˂/d:amountdue˃
-       ˂d:code    m:type="edm.guid"    ˃c9da6455-...˂/d:customercode˃
-       ˂d:since   m:type="edm.datetime"˃2008-07-10t00:00:00˂/d:customersince˃
-       ˂d:isactiv m:type="edm.boolean" ˃true˂/d:isactive˃
-       ˂d:ordernu m:type="edm.int64"   ˃255˂/d:numoforders˃
-       ˂d:binary  m:type="edm.binary" m:null="true" /˃
-       ˂d:partitionkey˃mypartitionkey˂/d:partitionkey˃
-       ˂d:rowkey˃myrowkey1˂/d:rowkey˃
-     ˂/m:properties˃
-   ˂/content˃
- ˂/entry˃
+ a" xmlns="http://www.w3.org/2005/atom">
+   <title />
+   <author>
+     <name />
+   </author>
+   <id />
+   <content type="application/xml">
+     <m:properties>    ←  entity's property defs
+       <d:address                      >mountain view</d:address>
+       <d:age     m:type="edm.int32"   >23</d:age>
+       <d:amntdue m:type="edm.double"  >200.23</d:amountdue>
+       <d:code    m:type="edm.guid"    >c9da6455-...</d:customercode>
+       <d:since   m:type="edm.datetime">2008-07-10t00:00:00</d:customersince>
+       <d:isactiv m:type="edm.boolean" >true</d:isactive>
+       <d:ordernu m:type="edm.int64"   >255</d:numoforders>
+       <d:binary  m:type="edm.binary" m:null="true" />
+       <d:partitionkey>mypartitionkey</d:partitionkey>
+       <d:rowkey>myrowkey1</d:rowkey>
+     </m:properties>
+   </content>
+ </entry>
 
 
  example JSON feed
@@ -4231,7 +4231,7 @@ documentclient docclient01 =
 
  to query the DB:
    // alt 1: sqlqueryspec:
-   var query = client.createdocumentquery˂family˃(
+   var query = client.createdocumentquery<family>(
      collectionuri,
      new sqlqueryspec() { // ← perform SQL query
        querytext = "select * from f where (f.surname = @lastname)",
@@ -4247,9 +4247,9 @@ documentclient docclient01 =
    // linq expressions will be automatically translated
    // into the appropriate SQL query:
 
-   var query = client.createdocumentquery˂family˃(collectionuri)
-       .where (d =˃ d.surname = "andt")
-       .select(d =˃ new { name = d.id, city = d.address?.city) }
+   var query = client.createdocumentquery<family>(collectionuri)
+       .where (d => d.surname = "andt")
+       .select(d => new { name = d.id, city = d.address?.city) }
        .asdocumentquery();
 
    var families = query.tolist();
@@ -4473,9 +4473,9 @@ documentclient docclient01 =
          ·
          └ → Initial In-memory "Database":
            · public class blogDataBase {
-           ·      public IEnumerable˂Blog˃  ←   DBSet˂˃  methods allows to query the DDBB using
+           ·      public IEnumerable<Blog>  ←   DBSet<>  methods allows to query the DDBB using
            ·           blogs { get; set; }    language-integrated query (LINQ), by implementing
-           · }                                IEnumerable˂˃ interface, giving access to many of
+           · }                                IEnumerable<> interface, giving access to many of
            ·                                  the existing LINQ queries.
            ·
            └ → Mark classes as models of database,
@@ -4493,11 +4493,11 @@ documentclient docclient01 =
                ·      protected override void
                ·      onModelCreating(  modelBuilder MB )    ← ☞   Convention : types mentioned in
                ·      {                                            "onModelCreating" are included
-               ·          MB .entity˂O Blog ˃()                    in the model
-               ·             .haskey    (c =˃ c. blogID )
-               ·             .property  (b =˃ b.  URL )
+               ·          MB .entity<O Blog >()                    in the model
+               ·             .haskey    (c => c. blogID )
+               ·             .property  (b => b.  URL )
                ·             .isrequired()
-               ·             .property  (b =˃ b.  description );
+               ·             .property  (b => b.  description );
                ·      }
                ·
                └ →  alt 2: data annotations
@@ -4527,7 +4527,7 @@ documentclient docclient01 =
       of entities in the context.
       Ex:
       public class blogContext :   DBContext  {
-        public   DBSet   ˂blog˃                        ← ☞   Convention , types exposed in
+        public   DBSet   <blog>                        ← ☞   Convention , types exposed in
                blogs { get; set; }                         DBSet props are included in
       }                                                    the model
 
@@ -4538,15 +4538,15 @@ documentclient docclient01 =
 
   Querying DDBBs
   - Ex: load all data from table:
-    list˂Blog˃ allBlogs =
+    list<Blog> allBlogs =
         context.  blogs .tolist();             ← get all table
 
-    IEnumerable˂blog˃ someblogs =
+    IEnumerable<blog> someblogs =
         context.  blogs .where                 ← filter
-           (b =˃ b.  URL .contains("dotnet"))
+           (b => b.  URL .contains("dotnet"))
 
     Blog blog01 = context.  blogs .single      ← get single instance
-           (b =˃ b. blogid  == 1);               matching a filter
+           (b => b. blogid  == 1);               matching a filter
 
   -  when calling LINQ operators, Entity Framework builds up an in-memory
      representation of the query .
@@ -4720,13 +4720,13 @@ documentclient docclient01 =
 
   - BLOB Limits:
     - blocks can be of different size.
-      up to 100 MB max    per Block  (up to 4 MB using REST API ˂= 2016-05-31)
+      up to 100 MB max    per Block  (up to 4 MB using REST API <= 2016-05-31)
     x Up to 50,000 blocks per BLOB.
     -----------------------------------
       Up to  ~ 4.75 TB TOTAL BLOB size
 
   - Upload Limits:
-    - BLOBs less than 256 MB (64 MB ˂2016-05-31),
+    - BLOBs less than 256 MB (64 MB <2016-05-31),
       can be uploaded  with a single write operation.
       - Storage clients default to 128 MB max single upload,
         tunnable in BLOBRequestOptions.singleBLOBUploadThresholdInBytes
@@ -4734,13 +4734,13 @@ documentclient docclient01 =
       - BLOBRequestOptions.ParallelOperationThreadCount
         tune the number of parallel threads/uploading-blocks
       - Up to 100_000 uncommitted blocks per BLOB,
-        Total size of uncommitted blocks ˂= 200_000? MB.
+        Total size of uncommitted blocks <= 200_000? MB.
 
   - optional md5-hash for block-verification available in API.
 
   - Block IDs :equal-length strings defined in client.
     - usually base-64 encoding used normalize strings into
-      equal lengths (pre-encoded string must ˂= 64 bytes).
+      equal lengths (pre-encoded string must <= 64 bytes).
 
   - Writing a block to a non-existing BLOB creates a new zero-lengh
     BLOB with uncommitted BLOBs.
@@ -4963,7 +4963,7 @@ REF:
   Lease BLOB operations
   - sets/manages lock on a BLOB for write/delete operations.
   - lock duration: 15 to 60 secs or infinite
-                  (60 secs ver ˂2012-02-12)
+                  (60 secs ver <2012-02-12)
 
   - Lease Operations:
     - Acquire : request new lease
@@ -5066,13 +5066,13 @@ Browser Web Cam → upload to Azure Blob storage how-to:
         fileName,
         buffer,
         {contentType:'image/jpeg'},
-        (error, result, response) =˃ {
+        (error, result, response) => {
           if (error) {
             // ... handle error
             return;
           }
           const url = BASE_URL + '/${fileName}';
-          this.canvas.current.toBlob((blob: Blob) =˃ {
+          this.canvas.current.toBlob((blob: Blob) => {
               this.props.closeModal(url, blob);
           });
         }
@@ -6005,9 +6005,9 @@ adatum ─ 1 ─→  "HR app" srv.principal   "HR APP"-keys will be used
     {
       services.addMVC();
       services.addAuthorization(
-        options =˃ {
+        options => {
            options.addPolicy                  ← 1) Add policy
-             (  "withIDOnly" , policy =˃
+             (  "withIDOnly" , policy =>
                policy.requireClaim("ID")); // ← 2) map claim to policy
             // policy.requireClaim("ID", "1", "2")); // only 1/2 values for claim
       });
@@ -6219,13 +6219,13 @@ adatum ─ 1 ─→  "HR app" srv.principal   "HR APP"-keys will be used
   configureServices(IServiceCollection services) {
     services.addMVC();
     services.addAuthorization(
-      options =˃ {
+      options => {
         options
           .addPolicy("requireAdminRole",
-            policy =˃ policy.  requireRole ("administrator"));
+            policy => policy.  requireRole ("administrator"));
         options
           .addPolicy( "elevatedRights", p
-            olicy =˃ policy.  requirerole ("backup", "root"));
+            olicy => policy.  requirerole ("backup", "root"));
       });
   }
 
@@ -6515,9 +6515,9 @@ Azure monitor unified alert: (vs classic alerts)
     │  ─ target resource signal: Observed VMs, container          │
     │                     └────────────┐                          │
     │  ─ criteria/Logic test   : ┌─── emitted signal ────┐        │
-    │                            percentage cpu            ˃ 70%  │
-    │                            server response time      ˃ 4 ms │
-    │                            result count of log query ˃ 100  │
+    │                            percentage cpu            > 70%  │
+    │                            server response time      > 4 ms │
+    │                            result count of log query > 100  │
     │                            log search query          ...    │
     │                            activity log events       ...    │
     │                            A.platform health         ...    │
@@ -6588,8 +6588,8 @@ recoverable by backing it up to Azure.
  autoscale setting schema
  -  1 profile
  -  2 metric rules in profile:
-    - scale out (avg. cpu% ˃ 85% for past 10 minutes)
-    - scale in  (avg. cpu% ˂ 60% for past 10 minutes)
+    - scale out (avg. cpu% > 85% for past 10 minutes)
+    - scale in  (avg. cpu% < 60% for past 10 minutes)
    {
    | "id": "/subscriptions/s1/resourcegroups/rg1/providers/microsoft.insights/autoscalesettings/setting1",
    | "name": "setting1",
@@ -6882,7 +6882,7 @@ any other display formatting.
     | }
 
       note: you can generate a (a)ctive (d)irectory (s)ervice (p)rincipal like:
-      $ az AD sp create-for-RBAC --SDK-auth ˃ "Azure.auth"
+      $ az AD sp create-for-RBAC --SDK-auth > "Azure.auth"
 
 step 2) use the API:
    var VMs = Azure01.virtualmachines;                // alt 1.  sync
@@ -6894,7 +6894,7 @@ step 2) use the API:
 
    // filter out using linq:
    ivirtualmachine targetvm01 = VMs.where(
-      VM =˃ VM.name == "simple").singleordefault();
+      VM => VM.name == "simple").singleordefault();
    console.writeline(targetvm?.id);
 
    inetworkinterface targetnic01 =
@@ -6959,10 +6959,10 @@ private bool istransient(exception ex) {
 ## App.Insights: config instrumentation  [[{monitoring,troubleshooting]]
 • application insights can be used with any web pages.
 • insert next script into HTML(templates) pages to be tracked.
-  immediately before closing ˂/head˃ tag, and before any
+  immediately before closing </head> tag, and before any
   other scripts. The script will start streaming app data
   in just a few seconds from browser to Azure.
-  ˂script type="text/javascript"˃
+  <script type="text/javascript">
   var appinsights=window.appinsights||function(a){
     function b(a){
       c[a]=function(){var
@@ -7004,7 +7004,7 @@ private bool istransient(exception ex) {
 
   window.appinsights=appinsights,appinsights.queue&&0===
    appinsights.queue.length&&appinsights.trackpageview();
-  ˂/script˃
+  </script>
 
 • optional parameters that can be set:
   • disable|limit number of ajax calls reported per page view.
@@ -7224,15 +7224,15 @@ namespace consoleapp {
   var appinsights = require("applicationinsights");
   appinsights.setup('instrumentation_key').start();
   appinsights.defaultclient.
-    addtelemetryprocessor(envelope =˃ {
+    addtelemetryprocessor(envelope => {
       envelope.tags["ai.cloud.role"] = "your role name";
       envelope.tags["ai.cloud.roleinstance"] = "your role instance"
   });
 
   ex 3: client/browser-side javascript
-  appinsights.queue.push(() =˃ {
+  appinsights.queue.push(() => {
     appinsights.context.
-      addtelemetryinitializer((envelope) =˃ {
+      addtelemetryinitializer((envelope) => {
         envelope.tags["ai.cloud.role"] = "your role name";
         envelope.tags["ai.cloud.roleinstance"] = "your role instance";
     });
@@ -7584,8 +7584,8 @@ intended to be kept around while you need access to the cache.
       public string sport { get; set; }
       public datetimeoffset dateplayed { get; set; }
       public string game { get; set; }
-      public ireadonlylist˂string˃ teams { get; set; }
-      public ireadonlylist˂(string team, int score)˃ results { get; set; }
+      public ireadonlylist<string> teams { get; set; }
+      public ireadonlylist<(string team, int score)> results { get; set; }
       ...
   }
 
@@ -7596,7 +7596,7 @@ intended to be kept around while you need access to the cache.
   bool added = DB.stringset("key1", serializedvalue);
   var result = DB.stringget("key1");
   var stat = newtonsoft.JSON.JSONconvert.
-              deserializeobject˂gamesta˃(result.tostring());
+              deserializeobject<gamesta>(result.tostring());
   console.writeline(stat.sport); // displays "soccer"
 
  cleaning up the connection
@@ -7821,9 +7821,9 @@ PREREQUISITES
 
  Create an Azure Resource Group project
 - Start Visual Studio → sign-in with A.account.
-  → File menu → New ˃ Project
+  → File menu → New > Project
     → Under Installed, select Visual C#.
-      → Select Cloud ˃ Azure Resource Group.
+      → Select Cloud > Azure Resource Group.
           Fill in project name:
         → Select the Logic App template.
           (After project is created, Solution Explorer opens
@@ -7880,7 +7880,7 @@ PREREQUISITES
 
 ## Deploy
 Solution Explorer → project's shortcut menu
- → select Deploy ˃ New
+ → select Deploy > New
    → Create logic app deployment
      → When deployment starts, status appears in
        Visual Studio Output window.
@@ -7981,7 +7981,7 @@ Solution Explorer → project's shortcut menu
        "functionName": {                  // Defining the parameter
          "type":"string",
          "minLength":1,
-         "defaultValue":"˂FunctionName˃"
+         "defaultValue":"<FunctionName>"
        }
      },
 
@@ -8786,7 +8786,7 @@ eventhubclient = eventhubclient.
      connectionstringbuilder.tostring());
 
 
-for (var i = 0; i ˂ nummessagestosend; i++) {
+for (var i = 0; i < nummessagestosend; i++) {
     var message = $"message {i}";
     await eventhubclient
       .sendasync (                           ← send event
@@ -8828,7 +8828,7 @@ for (var i = 0; i ˂ nummessagestosend; i++) {
   - It also implements an Azure storage-based checkpointing
     mechanism.
   To use it, implement the interface:
-  ˂˂ieventprocessor˃˃
+  <<ieventprocessor>>
   -------------------
   openasync
   closeasync
@@ -8845,7 +8845,7 @@ for (var i = 0; i ˂ nummessagestosend; i++) {
   await
     eventprocessorhost.
       registereventprocessorasync  ← register instance in runtime
-        ˂simpleeventprocessor˃()
+        <simpleeventprocessor>()
   ;
 
   at this point, client attempts to acquire a lease on every
@@ -9141,7 +9141,7 @@ Routing across Service Bus namespace:
   expected type.
 
 - With AMQP, objects are serialized into an
-  AMQP graph of ArrayList and IDictionary˂string,object˃
+  AMQP graph of ArrayList and IDictionary<string,object>
   objects. Any AMQP client can decode them.
 
 -  applications should take explicit control of object serialization
@@ -9208,7 +9208,7 @@ STEP 2) .NET publisher code:
 
     static async Task SendMessagesAsync(int numberOfMessagesToSend) {
       /*--*/try {
-      for (var i = 0; i ˂ numberOfMessagesToSend; i++) {
+      for (var i = 0; i < numberOfMessagesToSend; i++) {
         string messageBody = $"Message {i}";        // ← Create new message to send to the queue.
         var message = new Message(
               Encoding.UTF8.GetBytes(messageBody)
@@ -9306,7 +9306,7 @@ A.Queue storage: service for storing large numbers of messages that
                  can be accessed from anywhere in the world via
                  authenticated calls using HTTP or HTTPS.
  Limits
-- queue message: ˂= 64 KB
+- queue message: <= 64 KB
   - Use service bus queue for larger sizes
     - up to 256 KB in standard tier
     - up to   1 MB in premium tier
@@ -9343,22 +9343,22 @@ A.Queue storage: service for storing large numbers of messages that
   for accessing storage services.
   - Best Pattern: Keep it in a configuration-file:
     Visual Studio → Solution Explorer → app.config file:
-    ˂configuration˃
-      ˂startup˃
-        ˂supportedRuntime
+    <configuration>
+      <startup>
+        <supportedRuntime
           version="v4.0"
-          sku=".NETFramework,Version=v4.5.2" /˃
-      ˂/startup˃
-      ˂appSettings˃                        ←  Add here
-        ˂add key="StorageConnectionString"
+          sku=".NETFramework,Version=v4.5.2" />
+      </startup>
+      <appSettings>                        ←  Add here
+        <add key="StorageConnectionString"
          value="DefaultEndpointsProtocol=https;AccountName=account-name;AccountKey=account-key" /
-      ˂/appSettings˃
-    ˂/configuration˃
+      </appSettings>
+    </configuration>
 
     Ex:
-    ˂add
+    <add
       key="StorageConnectionString"
-      value="DefaultEndpointsProtocol=https;AccountName=storagesample;AccountKey=GMuzNHjlB3S9itqZJHHCnRkrokLkcSyW7yK9BRbGp0ENePunLPwBgpxV1Z/pVo9zpem/2xSHXkMqTHHLcx8XRA==" /˃
+      value="DefaultEndpointsProtocol=https;AccountName=storagesample;AccountKey=GMuzNHjlB3S9itqZJHHCnRkrokLkcSyW7yK9BRbGp0ENePunLPwBgpxV1Z/pVo9zpem/2xSHXkMqTHHLcx8XRA==" />
 
 
  Create the Queue service client
@@ -9690,7 +9690,7 @@ public partial class   Hotel                      index names
 
    var   definition  = new Index() {             // ← create index definition:
        Name = "hotels",
-       Fields = FieldBuilder.BuildForTypeG ˂Hotel˃ ()
+       Fields = FieldBuilder.BuildForTypeG <Hotel> ()
    };
 
    serviceClient. Indexes.Create (  definition ); // ← Finally create the index
@@ -9762,7 +9762,7 @@ Depending on  actions, only certain fields must be included each document:
   └─────────────────────────┴──────────────────┴──────────────────────────────────────────┘
 
 
-   var actions = new IndexAction˂G Hotel ˃[] {
+   var actions = new IndexAction<G Hotel >[] {
      IndexAction.Upload( new Hotel() {
        HotelId = "1",
        ...
@@ -9797,7 +9797,7 @@ NOTE: 1000 documents max per indexing request
     Console.WriteLine(
         "Failed to index some of the documents: {0}",
         String.Join(", ", e.IndexingResults.
-          Where(r =˃ !r.Succeeded).Select(r =˃ r.Key)));
+          Where(r => !r.Succeeded).Select(r => r.Key)));
   /*-------*/ }
   Console.WriteLine("Waiting for documents to be indexed...\n");
   Thread.Sleep(2000);
@@ -9844,14 +9844,14 @@ private static SearchIndexClient
 
 Example:
 SearchParameters parameters;
-DocumentSearchResult˂Hotel˃ results;
+DocumentSearchResult<Hotel> results;
 // Search index for term 'budget' and
 // return "hotelName" field
 parameters = new SearchParameters() {
    Select = new[] { "hotelName" }         // ← Select
 };
 results = indexClient.Documents.
-          Search˂Hotel˃(                  // ← Search
+          Search<Hotel>(                  // ← Search
               "budget",
               parameters);
 // Apply filter to index to find hotels
@@ -9865,7 +9865,7 @@ parameters = new SearchParameters() {
   }
 };
 results = indexClient.Documents.
-          Search˂Hotel˃(
+          Search<Hotel>(
             "*",
             parameters);
 
@@ -9885,12 +9885,12 @@ parameters = new SearchParameters() { ← // Search entire index,
 };
 
 results = indexClient.Documents.
-          Search˂Hotel˃(
+          Search<Hotel>(
             "*", parameters);
 
 parameters = new SearchParameters();
 results = indexClient.Documents.
-          Search˂Hotel˃(                // ← Search entire index  for
+          Search<Hotel>(                // ← Search entire index  for
                    "motel",             // ← term 'motel'
                    parameters);
 WriteDocuments(results);
@@ -9898,9 +9898,9 @@ WriteDocuments(results);
  Handle search results
 private static void
   WriteDocuments(
-    DocumentSearchResult˂Hotel˃ searchResults) {
+    DocumentSearchResult<Hotel> searchResults) {
     foreach (
-       SearchResult˂Hotel˃ result in
+       SearchResult<Hotel> result in
        searchResults.Results) {
         Console.WriteLine(result.Document);
     }
