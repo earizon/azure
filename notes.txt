@@ -3252,11 +3252,10 @@ servlet, Vert.x Web, or Funqy HTTP endpoints.
 # Azure STORAGE [[{ $storage ]]
 ## Azure Table Storage (NoSQL) [[{storage,db_engine.nosql,1_price.comparative]]
 a.table storage (datastore) service:
-• stores large   structured    NoSQL  (key/attribute) data,
+* stores large   structured    NoSQL  (key/attribute) data,
   (  schemaless design )
-• price: cost-effective (vs SQL)    [1_price.comparative]
-
-•  limits :
+* price: cost-effective (vs SQL)    [1_price.comparative]
+*  limits :
   · limited by underlying storage account capacity.
   · any number of entities in a table
   · any number of tables
@@ -3264,15 +3263,13 @@ a.table storage (datastore) service:
   · entity size: up to 1mb in table storage
                  up to 2mb in Cosmos DB
                  up to 252 properties-per-key
-
-• Azure Cosmos DB table API: premium offering :
+* Azure Cosmos DB table API: premium offering :
   · throughput-optimized tables
   · global distribution
   · automatic secondary indexes
   · (Cosmos DB allows also for SQL and other DDBB model)
-
-• tables accepts authenticated calls (in|out)side A.cloud.
-• COMMON USE CASES:
+* tables accepts authenticated calls (in|out)side A.cloud.
+* COMMON USE CASES:
   · storing terabytes of structured data
   · datasets that  don't require complex joins,  foreign keys,
     or stored procedures and   can be denormalized  for fast access
@@ -6957,8 +6954,8 @@ private bool istransient(exception ex) {
 
 # instrument for monit&log
 ## App.Insights: config instrumentation  [[{monitoring,troubleshooting]]
-• application insights can be used with any web pages.
-• insert next script into HTML(templates) pages to be tracked.
+* application insights can be used with any web pages.
+* insert next script into HTML(templates) pages to be tracked.
   immediately before closing </head> tag, and before any
   other scripts. The script will start streaming app data
   in just a few seconds from browser to Azure.
@@ -7006,9 +7003,9 @@ private bool istransient(exception ex) {
    appinsights.queue.length&&appinsights.trackpageview();
   </script>
 
-• optional parameters that can be set:
-  • disable|limit number of ajax calls reported per page view.
-  • set debug mode to have telemetry move rapidly through the pipeline
+* optional parameters that can be set:
+  * disable|limit number of ajax calls reported per page view.
+  * set debug mode to have telemetry move rapidly through the pipeline
     without being batched.
   ex. code snippet:
   })({
@@ -10417,10 +10414,9 @@ https://www.infoq.com/news/2020/03/azure-shared-disks/  [[}]]
 
 ## Azure Pipelines: [[{devops,devops.containerization,2_aws.devops,2_others.gpc,architecture.mobile,0_PM.TODO]]
 @[https://azure.microsoft.com/es-es/services/devops/pipelines/]
-• Automate builds and deployments.
-
-• Build/test/deploy Node.js/Python/Java/PHP/Ruby/C/C++/.NET/Android/iOS apps. Run in parallel on Linux, macOS, and
-  Windows.
+* Automate builds and deployments.
+* Build/test/deploy Node.js/Python/Java/PHP/Ruby/C/C++/.NET/Android/iOS apps.
+  Run in parallel on Linux, macOS, and Windows.
 
 - Deploy to Azure, AWS and GCP..
 [[}]]
