@@ -5083,6 +5083,17 @@ Browser Web Cam → upload to Azure Blob storage how-to:
 ## Active Directory: [[{identity.AD,101,0_doc_has.comparative,0_doc_has.diagram,0_PM.price]]
 @[https://docs.microsoft.com/en-us/azure/active-directory/]
 PRICE: Free for less than 500_000 objects.
+* Identity management capabilities:
+  - MFA
+  - Device Registration
+  - Self-service pass. management
+  - Self-service group management
+  - Privileged account management
+  - Role-based access control
+  - Application usage monitoring
+  - Rich auditing
+  - Security monitoring and alerting
+
 
 REF: Microsoft cloud identity for enterprise architects
 @[https://docs.microsoft.com/en-us/office365/enterprise/microsoft-cloud-it-architecture-resources#identity]
@@ -10567,6 +10578,48 @@ available infrastructure in Azure.
 missed anything important!
 https://github.com/ghostinthewires/Azure-Readiness-Checklist
 [[}]]
+
+## Azure AD WS-Federation Authentication
+* A federation metadata document is published by Azure AD for services
+  configured to accept tokens issued by Azure AD
+* Metadata endpoints.
+  * Tenant specific
+    - Designed for a particular tenant
+    >> Includes information about the tenant
+  * Tenant independent
+    - Provides information common to all Azure AD tenants
+    >> Recommened for multi-tenant applications
+
+* Federation metadata endpoints
+  * Federation metadata is published at
+    https://login.microsoftonline.com
+        /${TenantDomainName}/FederationMetadata/2007-06/FederationMetadata.xml
+         └───────┬──────────┘                           └───────┬──────────┘
+      For Tenant-independent endpoints == "common"      * EntityDescriptor:
+      For Tenant-specific endpoints, one of:              Contains EntityID attribute.
+      - Registered domain name of an Azure AD tenant      >> Value of attribute represents issuer
+      - Immutable tenant ID of the domain                    E.g.: Security token service issued
+                                                             by the token.
+                                                          Contents, cont'd: ──────
+                                                          * WS-Federation endpoint URL
+                                                            * Includes URL used by Azure AD for
+                                                              single sing-in/out request in
+                                                              WS-Federation protocol
+                                                            * Endpoint is locate in the Passive-
+                                                              RequestorEndpoint element.
+                                                          * SAML protocol endpoint URML
+                                                            * Federation metadata
+                                                              - URL used by AD for single sign-in/
+                                                                out requests in SAML 2.0 protocol.
+                                                              - Endpoints contained in
+                                                                IDPSSODescriptor  element
+                                                              - Sign-in/out URLs contained in the
+                                                                following elements:
+                                                                >> SingleSignOnService
+                                                                >> SingleLogoutService
+
+
+
 
 ### TODO
   Compact devops.cli for 2_azure
